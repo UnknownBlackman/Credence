@@ -1,0 +1,20 @@
+{
+  "name": "@credence/zktls-engine",
+  "version": "1.0.0",
+  "description": "zkTLS Attestation Engine: simulates TLSNotary proof generation for Credence",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "demo": "ts-node src/demo.ts",
+    "test": "jest"
+  },
+  "dependencies": {
+    "ethers": "^6.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
+  }
+}

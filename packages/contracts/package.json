@@ -1,0 +1,17 @@
+{
+  "name": "@credence/contracts",
+  "version": "1.0.0",
+  "description": "Credence smart contracts on Foundry for Tempo Moderato Testnet",
+  "scripts": {
+    "build": "forge build",
+    "compile": "forge build",
+    "test": "forge test",
+    "test:verbose": "forge test -vvv",
+    "deploy:local": "forge script script/Deploy.s.sol:DeployScript --rpc-url localhost --broadcast",
+    "deploy:moderato": "forge script script/Deploy.s.sol:DeployScript --rpc-url moderato --broadcast",
+    "anvil": "anvil"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "credence",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Credence: Zero-Knowledge Invoice Financing on Tempo",
+  "workspaces": [
+    "packages/contracts",
+    "packages/zktls-engine",
+    "packages/frontend"
+  ],
+  "scripts": {
+    "contracts:build": "npm run build --prefix packages/contracts",
+    "contracts:compile": "npm run compile --prefix packages/contracts",
+    "contracts:test": "npm run test --prefix packages/contracts",
+    "contracts:deploy:local": "npm run deploy:local --prefix packages/contracts",
+    "contracts:deploy:moderato": "npm run deploy:moderato --prefix packages/contracts",
+    "zktls:install": "npm install --prefix packages/zktls-engine",
+    "zktls:demo": "npm run demo --prefix packages/zktls-engine",
+    "frontend:install": "npm install --prefix packages/frontend",
+    "frontend:dev": "npm run dev --prefix packages/frontend",
+    "frontend:build": "npm run build --prefix packages/frontend"
+  },
+  "dependencies": {
+    "make": "^0.8.1"
+  }
+}

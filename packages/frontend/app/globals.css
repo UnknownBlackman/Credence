@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-display: "Outfit", "Plus Jakarta Sans", sans-serif;
+  --font-serif: "Playfair Display", "Instrument Serif", Georgia, serif;
+  --font-accent: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-accent {
+  font-family: var(--font-accent);
+}
+
+/* Luxurious Gold & White glassmorphic panels */
+.glass-panel-gold {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(235, 218, 178, 0.65);
+  box-shadow: 0 4px 24px -2px rgba(197, 160, 89, 0.12), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 0 16px 40px -8px rgba(197, 160, 89, 0.2), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #A8792A 0%, #C99738 40%, #8A611B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-button {
+  background: linear-gradient(135deg, #D4AF37 0%, #C5A059 50%, #B38F38 100%);
+  box-shadow: 0 6px 20px rgba(197, 160, 89, 0.28);
+}
+
+.gold-button:hover {
+  background: linear-gradient(135deg, #DEBA47 0%, #CCA760 50%, #BD9942 100%);
+  box-shadow: 0 10px 28px rgba(197, 160, 89, 0.38);
+}
+
+.subtle-grid {
+  background-image: radial-gradient(rgba(197, 160, 89, 0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+}

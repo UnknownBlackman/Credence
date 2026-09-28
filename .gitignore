@@ -1,0 +1,7 @@
+.agents/
+.claude/
+logo/
+node_modules/
+makefile
+package-lock.json
+skills-lock.json
