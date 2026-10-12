@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./logo/credence-logo-lockup-dark.svg" alt="Credence Logo" width="580" />
+  <img src="packages\frontend\components\logos\credence-logo-lockup-cream.svg" alt="Credence Logo" width="580" />
 </p>
 
 <p align="center">
