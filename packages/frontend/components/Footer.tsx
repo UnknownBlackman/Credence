@@ -7,7 +7,7 @@ import { LogoMonolith } from './logos/LogoComponents';
 export const Footer: React.FC = () => {
   return (
     <footer className="relative border-t border-amber-200/50 bg-white/70 backdrop-blur-md py-12 text-stone-500 text-xs">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           
           {/* Brand Mark & Description */}

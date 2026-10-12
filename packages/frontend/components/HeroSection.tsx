@@ -14,10 +14,10 @@ interface HeroSectionProps {
 export const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted, onExploreHowItWorks }) => {
   return (
     <section className="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Hero Title with varied typography, Playfair Display accent in rich gold */}
-        <div className="text-center max-w-4xl mx-auto mb-6">
+        <div className="text-center max-w-5xl mx-auto mb-6">
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -35,7 +35,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted, onExplor
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-6 text-base sm:text-lg text-stone-600 leading-relaxed font-light max-w-2xl mx-auto"
+            className="mt-6 text-base sm:text-lg text-stone-600 leading-relaxed font-light max-w-3xl mx-auto"
           >
             Credence verifies corporate revenue via zkTLS, connecting you directly to deep external vaults (Aave, Morpho, Compound, Tempo), ensuring liquidity is always ready when you draw.
           </motion.p>
@@ -79,7 +79,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted, onExplor
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
           whileHover={{ y: -6, transition: { duration: 0.25 } }}
-          className="max-w-3xl mx-auto rounded-3xl glass-panel-gold p-6 sm:p-8 border border-amber-200/60 shadow-[0_20px_50px_-10px_rgba(212,175,55,0.18)] relative overflow-hidden group cursor-default"
+          className="max-w-4xl mx-auto rounded-3xl glass-panel-gold p-6 sm:p-8 border border-amber-200/60 shadow-[0_20px_50px_-10px_rgba(212,175,55,0.18)] relative overflow-hidden group cursor-default"
         >
           {/* Decorative warm gold glow */}
           <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-amber-300/20 via-yellow-200/10 to-transparent rounded-full blur-3xl pointer-events-none" />

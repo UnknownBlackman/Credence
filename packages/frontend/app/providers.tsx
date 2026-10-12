@@ -10,13 +10,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { mainnet, sepolia } from "viem/chains";
 import { tempoModerato } from "@/lib/tempoConfig";
 
+const walletConnectProjectId =
+  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ||
+  "3fcc6bba2d1de962223a504383a54d5b";
+
 export const config = createConfig({
   chains: [tempoModerato, mainnet, sepolia],
   ssr: true,
   connectors: [
     injected(),
     walletConnect({
-      projectId: "3fcc6bba2d1de962223a504383a54d5b",
+      projectId: walletConnectProjectId,
       showQrModal: true,
     }),
   ],

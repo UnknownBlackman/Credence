@@ -108,6 +108,12 @@ export function useCredenceAccount() {
     await addTempoNetwork();
   }, [switchChain, addTempoNetwork]);
 
+  const openConnectModal = useCallback(() => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("credence_open_connect_modal"));
+    }
+  }, []);
+
   const hasInjectedProvider =
     typeof window !== "undefined" && typeof (window as any).ethereum !== "undefined";
 
@@ -132,5 +138,6 @@ export function useCredenceAccount() {
     isSwitchingChain,
     hasInjectedProvider,
     isMetaMaskInstalled,
+    openConnectModal,
   };
 }

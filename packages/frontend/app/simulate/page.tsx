@@ -108,7 +108,7 @@ export default function SimulatePage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Brand Kicker & Header */}
       <div className="mb-10">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-stone-200/90 shadow-[0_2px_14px_rgba(0,0,0,0.06)] backdrop-blur-md mb-4">
@@ -124,7 +124,7 @@ export default function SimulatePage() {
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight font-display text-transparent bg-clip-text bg-gradient-to-r from-[#A8792A] via-[#C99738] to-[#92651A]">
           MPP Repayment Simulator
         </h1>
-        <p className="mt-2 text-sm sm:text-base text-stone-600 leading-relaxed font-light max-w-2xl">
+        <p className="mt-2 text-sm sm:text-base text-stone-600 leading-relaxed font-light max-w-3xl">
           Watch Tempo&apos;s Machine Payments Protocol automatically split an incoming invoice payment
           between vault repayment and borrower surplus in real time.
         </p>

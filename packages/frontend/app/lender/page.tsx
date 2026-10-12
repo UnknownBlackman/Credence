@@ -2,65 +2,117 @@
 
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import { Landmark, ShieldCheck, Zap, ArrowRight, RefreshCw, CheckCircle2 } from "lucide-react";
+import { Landmark, ShieldCheck, Zap, ArrowRight, RefreshCw, CheckCircle2, Lock } from "lucide-react";
 import { LogoMonolith } from "@/components/logos/LogoComponents";
 import { useCredenceAccount } from "@/lib/useCredenceAccount";
+import { LenderDashboard } from "@/components/LenderDashboard";
+import { useLenderDashboard } from "@/lib/useFinancialDashboard";
 
 export default function LenderPage() {
-  const { address, isDemo } = useCredenceAccount();
+  const { address, isConnected, isDemo, openConnectModal } = useCredenceAccount();
+  const {
+    currentLentPrincipal,
+    currentShares,
+    estimatedInterestAccrued,
+    totalValueWithInterest,
+    recordDeposit,
+  } = useLenderDashboard(address);
+
   const [depositAmount, setDepositAmount] = useState(10000);
   const [isDepositing, setIsDepositing] = useState(false);
   const [txHash, setTxHash] = useState<string | undefined>();
+  const [viewDashboard, setViewDashboard] = useState(false);
 
   // Mock vault stats (in production read from on-chain via wagmi useReadContract)
   const vaultStats = {
-    tvl: 500_000,
-    availableLiquidity: 464_000,
+    tvl: 500_000 + currentLentPrincipal,
+    availableLiquidity: 464_000 + currentLentPrincipal,
     deployedCapital: 36_000,
     currentApyPct: 8.4,
     dscr: 2.1,
     historicalDefaultRate: "0.00%",
     activeLoans: 1,
-    lenderCount: 12,
+    lenderCount: currentLentPrincipal > 0 ? 13 : 12,
   };
 
-  const userShares = 0;
-  const userUSDCValue = 0;
+  const userShares = currentShares;
+  const userUSDCValue = totalValueWithInterest;
 
   async function handleDeposit() {
+    if (!isConnected) {
+      openConnectModal();
+      return;
+    }
     setIsDepositing(true);
     await new Promise((r) => setTimeout(r, 2500));
     const fakeTx = "0x" + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join("");
+    recordDeposit(depositAmount, fakeTx);
     setTxHash(fakeTx);
     setIsDepositing(false);
+    setViewDashboard(true);
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Brand Kicker & Header */}
-      <div className="mb-10">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-stone-200/90 shadow-[0_2px_14px_rgba(0,0,0,0.06)] backdrop-blur-md mb-4">
-          <div className="w-5 h-5 rounded-md bg-[#0E0C0A] flex items-center justify-center p-0.5 border border-stone-800">
-            <LogoMonolith size={12} variant="white" />
+      <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-stone-200/90 shadow-[0_2px_14px_rgba(0,0,0,0.06)] backdrop-blur-md mb-4">
+            <div className="w-5 h-5 rounded-md bg-[#0E0C0A] flex items-center justify-center p-0.5 border border-stone-800">
+              <LogoMonolith size={12} variant="white" />
+            </div>
+            <span className="text-xs font-mono font-medium text-stone-800 tracking-wide">
+              CREDENCE <span className="opacity-40">·</span> LIQUIDITY VAULT
+            </span>
           </div>
-          <span className="text-xs font-mono font-medium text-stone-800 tracking-wide">
-            CREDENCE <span className="opacity-40">·</span> LIQUIDITY VAULT
-          </span>
+
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 font-display">
+            Lender Vault{" "}
+            <span className="font-accent italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#A8792A] via-[#C99738] to-[#92651A]">
+              Real-World Yield
+            </span>
+          </h1>
+          <p className="mt-2 text-sm sm:text-base text-stone-600 leading-relaxed font-light max-w-3xl">
+            Deposit USDC to earn real-world yield backed by verified off-chain cash flows. Repayments stream automatically via Tempo Machine Payments Protocol.
+          </p>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 font-display">
-          Lender Vault{" "}
-          <span className="font-accent italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#A8792A] via-[#C99738] to-[#92651A]">
-            Real-World Yield
-          </span>
-        </h1>
-        <p className="mt-2 text-sm sm:text-base text-stone-600 leading-relaxed font-light max-w-2xl">
-          Deposit USDC to earn real-world yield backed by verified off-chain cash flows. Repayments stream automatically via Tempo Machine Payments Protocol.
-        </p>
+        {/* Tab switch between Deposit Pool & Position Dashboard */}
+        <div className="inline-flex items-center p-1.5 bg-amber-50/80 border border-amber-200/80 rounded-2xl shadow-xs self-start md:self-auto shrink-0">
+          <button
+            type="button"
+            onClick={() => setViewDashboard(false)}
+            className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer font-sans ${
+              !viewDashboard
+                ? "bg-white text-stone-900 shadow-xs border border-amber-200/60 font-bold"
+                : "text-stone-600 hover:text-stone-900"
+            }`}
+          >
+            Vault Deposit
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewDashboard(true)}
+            className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer font-sans ${
+              viewDashboard
+                ? "bg-white text-stone-900 shadow-xs border border-amber-200/60 font-bold"
+                : "text-stone-600 hover:text-stone-900"
+            }`}
+          >
+            Lender Dashboard
+          </button>
+        </div>
       </div>
 
-      {/* Top 3 Metric Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      {viewDashboard ? (
+        <LenderDashboard
+          accountAddress={address}
+          onDepositRequested={() => setViewDashboard(false)}
+        />
+      ) : (
+        <>
+          {/* Top 3 Metric Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         {[
           {
             label: "Total Value Locked",
@@ -230,24 +282,35 @@ export default function LenderPage() {
                 />
               </div>
 
-              <button
-                type="button"
-                onClick={handleDeposit}
-                disabled={isDepositing || depositAmount < 100}
-                className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-stone-950 bg-gradient-to-r from-[#E5C158] via-[#D4AF37] to-[#C5A059] hover:from-[#ECD075] hover:to-[#D4AF37] disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-[0_4px_16px_rgba(212,175,55,0.3)] hover:shadow-[0_8px_24px_rgba(212,175,55,0.45)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 cursor-pointer"
-              >
-                {isDepositing ? (
-                  <>
-                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                    <span>Depositing…</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Deposit USDC</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </>
-                )}
-              </button>
+              {isConnected ? (
+                <button
+                  type="button"
+                  onClick={handleDeposit}
+                  disabled={isDepositing || depositAmount < 100}
+                  className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-stone-950 bg-gradient-to-r from-[#E5C158] via-[#D4AF37] to-[#C5A059] hover:from-[#ECD075] hover:to-[#D4AF37] disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-[0_4px_16px_rgba(212,175,55,0.3)] hover:shadow-[0_8px_24px_rgba(212,175,55,0.45)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  {isDepositing ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      <span>Depositing…</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Deposit USDC</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </>
+                  )}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={openConnectModal}
+                  className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-stone-950 bg-gradient-to-r from-[#E5C158] via-[#D4AF37] to-[#C5A059] hover:from-[#ECD075] hover:to-[#D4AF37] rounded-xl shadow-[0_4px_16px_rgba(212,175,55,0.3)] hover:shadow-[0_8px_24px_rgba(212,175,55,0.45)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Lock className="w-3.5 h-3.5" />
+                  <span>Connect Wallet to Deposit</span>
+                </button>
+              )}
             </div>
 
             <p className="text-xs text-stone-500 flex items-center gap-1.5 font-sans">
@@ -314,6 +377,8 @@ export default function LenderPage() {
           </div>
         </div>
       </div>
+        </>
+      )}
     </div>
   );
 }

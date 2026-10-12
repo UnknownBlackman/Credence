@@ -12,6 +12,7 @@ import {
   PROFILE_B,
   PROFILE_C,
   ALL_PROFILES,
+  type RawBusinessData,
 } from "@credence/zktls-engine";
 import { CONTRACT_ADDRESSES } from "./tempoConfig";
 
@@ -24,12 +25,38 @@ const DEMO_NOTARY_PRIVATE_KEY =
 
 export const CHAIN_ID = 42431; // Tempo Moderato
 
-export async function runZkAttestation(profileIndex: 0 | 1 | 2) {
-  const profile = ALL_PROFILES[profileIndex];
-  const contractAddress = CONTRACT_ADDRESSES.CredenceCreditManager || CONTRACT_ADDRESSES.CredoCreditManager;
+export async function runZkAttestation(
+  input: 0 | 1 | 2 | RawBusinessData,
+  customLabel?: string
+) {
+  let rawData: RawBusinessData;
+  let profileLabel = customLabel || "Custom Invoice Facility";
+  let expectedOutcome: "APPROVED" | "REJECTED" = "APPROVED";
+
+  if (typeof input === "number") {
+    const profile = ALL_PROFILES[input];
+    rawData = profile.data;
+    profileLabel = profile.label;
+    expectedOutcome = profile.expectedOutcome;
+  } else {
+    rawData = input;
+    profileLabel = customLabel || `${rawData.companyName} (${rawData.invoice.id})`;
+    const disputeBps =
+      rawData.trailing90dGrossVolume > 0
+        ? Math.round((rawData.trailing90dDisputes / rawData.trailing90dGrossVolume) * 10000)
+        : 10000;
+    const coverage =
+      rawData.invoice.faceValueUsd > 0
+        ? rawData.trailing90dGrossVolume / rawData.invoice.faceValueUsd
+        : 0;
+    expectedOutcome = disputeBps <= 100 && coverage >= 2 ? "APPROVED" : "REJECTED";
+  }
+
+  const contractAddress =
+    CONTRACT_ADDRESSES.CredenceCreditManager || CONTRACT_ADDRESSES.CredoCreditManager;
 
   const result = await generateZkAttestation(
-    profile.data,
+    rawData,
     DEMO_NOTARY_PRIVATE_KEY,
     contractAddress,
     CHAIN_ID
@@ -37,8 +64,8 @@ export async function runZkAttestation(profileIndex: 0 | 1 | 2) {
 
   return {
     ...result,
-    profileLabel: profile.label,
-    expectedOutcome: profile.expectedOutcome,
+    profileLabel,
+    expectedOutcome,
   };
 }
 

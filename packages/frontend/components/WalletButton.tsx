@@ -44,6 +44,15 @@ export function WalletButton() {
   const [connectingId, setConnectingId] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    const handleOpen = () => {
+      setErrorMessage(null);
+      setModalOpen(true);
+    };
+    window.addEventListener("credence_open_connect_modal", handleOpen);
+    return () => window.removeEventListener("credence_open_connect_modal", handleOpen);
+  }, []);
+
   const handleCopy = () => {
     if (address) {
       navigator.clipboard.writeText(address);
@@ -99,6 +108,8 @@ export function WalletButton() {
         setErrorMessage("Connection request was cancelled in your wallet. Please try again.");
       } else if (err?.message?.includes("already pending")) {
         setErrorMessage("A connection request is already pending in your wallet extension. Please open it to approve.");
+      } else if (err?.message?.includes("Allowlist") || err?.message?.includes("cloud.reown.com")) {
+        setErrorMessage("WalletConnect origin allowlist restriction active for this project ID on cloud.reown.com. Connect via MetaMask, Tempo/Injected EVM, or Quick Demo Connect.");
       } else {
         setErrorMessage(err?.message || "Failed to connect. Please try again or use Quick Demo Connect.");
       }

@@ -81,7 +81,7 @@ export const ConnectedVaults: React.FC<ConnectedVaultsProps> = ({ onGetStarted }
 
   return (
     <section id="liquidity-vaults" className="py-20 relative overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <motion.div
@@ -89,7 +89,7 @@ export const ConnectedVaults: React.FC<ConnectedVaultsProps> = ({ onGetStarted }
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center max-w-2xl mx-auto mb-14"
+          className="text-center max-w-3xl mx-auto mb-14"
         >
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-50/90 border border-amber-200/80 text-[11px] font-mono uppercase tracking-widest text-amber-900 font-semibold mb-3">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
